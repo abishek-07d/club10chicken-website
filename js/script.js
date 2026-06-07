@@ -108,9 +108,15 @@ let cart = [];
 let selectedVariants = {};
 let selectedPayment = 'cod';
 let screenshotData = null;
-let currentCategory = Object.keys(MENU_DATA)[0];
-const DELIVERY_CHARGE = 50;
+// currentCategory no longer needed - all categories displayed on one page
 const KARTHI_WHATSAPP = '919500058912';
+
+function getDeliveryCharge(distance) {
+    const d = parseFloat(distance);
+    if (isNaN(d) || d <= 0) return 0;
+    if (d > 3) return 100;
+    return 50;
+}
 
 // ===== INIT =====
 function init() {
@@ -129,37 +135,42 @@ function hideLoader() {
 
 // ===== MENU RENDERING =====
 function renderMenuTabs() {
+    const icons = {
+        'Fried Chicken': 'fa-drumstick-bite', 'Burgers & Rolls': 'fa-hamburger', 'Rice & Noodles': 'fa-bowl-rice',
+        'Momos': 'fa-dumpling', 'Snacks': 'fa-cookie-bite', 'Sandwiches': 'fa-bread-slice',
+        'Pizza': 'fa-pizza-slice', 'Milkshakes': 'fa-glass-whiskey', 'Mocktails': 'fa-cocktail', 'Juice Stall': 'fa-lemon'
+    };
     const tabs = Object.keys(MENU_DATA).map(cat => {
-        const icons = {
-            'Fried Chicken': 'fa-drumstick-bite', 'Burgers & Rolls': 'fa-hamburger', 'Rice & Noodles': 'fa-bowl-rice',
-            'Momos': 'fa-dumpling', 'Snacks': 'fa-cookie-bite', 'Sandwiches': 'fa-bread-slice',
-            'Pizza': 'fa-pizza-slice', 'Milkshakes': 'fa-glass-whiskey', 'Mocktails': 'fa-cocktail', 'Juice Stall': 'fa-lemon'
-        };
         const icon = icons[cat] || 'fa-utensils';
-        const active = cat === currentCategory ? 'active' : '';
-        return `<button class="menu-tab ${active}" onclick="switchCategory('${cat}')"><i class="fas ${icon}"></i> ${cat}</button>`;
+        const catId = cat.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        return `<a href="#menu-${catId}" class="menu-tab" onclick="event.preventDefault();document.getElementById('menu-${catId}').scrollIntoView({behavior:'smooth',block:'start'})"><i class="fas ${icon}"></i> ${cat}</a>`;
     }).join('');
     document.getElementById('menuTabs').innerHTML = tabs;
 }
 
 function switchCategory(cat) {
-    currentCategory = cat;
-    renderMenuTabs();
-    renderMenu();
+    // No longer used - all categories displayed on one page
 }
 
 function renderMenu() {
-    const items = MENU_DATA[currentCategory] || [];
     const grid = document.getElementById('menuGrid');
-    grid.innerHTML = items.map(item => {
-        const variantIdx = selectedVariants[item.id] || 0;
-        const price = item.vPrices[variantIdx];
-        const variantLabel = item.variants[variantIdx] || '';
-        const variantBtns = item.variants.length > 0 ? `<div class="menu-variants">${item.variants.map((v, i) => `<button class="menu-variant ${i === variantIdx ? 'active' : ''}" onclick="selectVariant('${item.id}', ${i})">${v}</button>`).join('')}</div>` : '';
-        const qty = getCartQty(item.id, variantLabel);
-        const qtyControls = qty > 0 ? `<div class="menu-qty"><button onclick="updateQty('${item.id}', '${variantLabel}', -1)">−</button><span>${qty}</span><button onclick="updateQty('${item.id}', '${variantLabel}', 1)">+</button></div>` : `<button class="menu-add" onclick="addToCart('${item.id}', '${item.name}', ${price}, '${item.emoji}', '${variantLabel}')"><i class="fas fa-plus"></i></button>`;
-        return `<div class="menu-item"><div class="menu-img"><img src="${item.img}" alt="${item.name}" loading="lazy"><div class="emoji">${item.emoji}</div></div><div class="menu-body"><div class="menu-name">${item.name}</div><div class="menu-desc">${item.desc}</div>${variantBtns}<div class="menu-foot"><div class="menu-price">₹${price}</div>${qtyControls}</div></div></div>`;
-    }).join('');
+    let html = '';
+    Object.keys(MENU_DATA).forEach(cat => {
+        const catId = cat.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        const items = MENU_DATA[cat];
+        html += `<div class="menu-category" id="menu-${catId}"><div class="menu-category-header"><h3 class="menu-category-title">${cat}</h3></div><div class="menu-grid">`;
+        html += items.map(item => {
+            const variantIdx = selectedVariants[item.id] || 0;
+            const price = item.vPrices[variantIdx];
+            const variantLabel = item.variants[variantIdx] || '';
+            const variantBtns = item.variants.length > 0 ? `<div class="menu-variants">${item.variants.map((v, i) => `<button class="menu-variant ${i === variantIdx ? 'active' : ''}" onclick="selectVariant('${item.id}', ${i})">${v}</button>`).join('')}</div>` : '';
+            const qty = getCartQty(item.id, variantLabel);
+            const qtyControls = qty > 0 ? `<div class="menu-qty"><button onclick="updateQty('${item.id}', '${variantLabel}', -1)">−</button><span>${qty}</span><button onclick="updateQty('${item.id}', '${variantLabel}', 1)">+</button></div>` : `<button class="menu-add" onclick="addToCart('${item.id}', '${item.name}', ${price}, '${item.emoji}', '${variantLabel}')"><i class="fas fa-plus"></i></button>`;
+            return `<div class="menu-item"><div class="menu-img"><img src="${item.img}" alt="${item.name}" loading="lazy"><div class="emoji">${item.emoji}</div></div><div class="menu-body"><div class="menu-name">${item.name}</div><div class="menu-desc">${item.desc}</div>${variantBtns}<div class="menu-foot"><div class="menu-price">₹${price}</div>${qtyControls}</div></div></div>`;
+        }).join('');
+        html += '</div></div>';
+    });
+    grid.innerHTML = html;
 }
 
 function selectVariant(itemId, idx) {
@@ -216,12 +227,12 @@ function removeFromCart(cartId) {
 function updateCartUI() {
     const totalQty = cart.reduce((s, c) => s + c.qty, 0);
     const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
-    const delivery = subtotal > 0 ? DELIVERY_CHARGE : 0;
+    const delivery = subtotal > 0 ? 50 : 0;
     const grandTotal = subtotal + delivery;
     document.getElementById('navBadge').textContent = totalQty;
     document.getElementById('fabBadge').textContent = totalQty;
     document.getElementById('cartSubtotal').textContent = '₹' + subtotal;
-    document.getElementById('cartDelivery').textContent = '₹' + delivery;
+    document.getElementById('cartDelivery').textContent = '₹' + delivery + ' (0–3 km)';
     document.getElementById('cartGrandTotal').textContent = '₹' + grandTotal;
     const cartItems = document.getElementById('cartItems');
     const cartFooter = document.getElementById('cartFooter');
@@ -261,13 +272,17 @@ function closeCart(e) {
 function openCheckout() {
     if (cart.length === 0) { showToast('Your cart is empty!', 'error'); return; }
     closeCart();
-    const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
-    const delivery = DELIVERY_CHARGE;
-    const grandTotal = subtotal + delivery;
-    document.getElementById('orderSummaryItems').innerHTML = cart.map(item => `<div class="order-item"><span>${item.name} ${item.variant !== 'Combo' ? '(' + item.variant + ')' : ''} × ${item.qty}</span><span>₹${item.price * item.qty}</span></div>`).join('') + `<div class="order-item" style="border-top:1px solid #eee;padding-top:8px;margin-top:8px"><span>Delivery Charge</span><span>₹${delivery}</span></div>`;
-    document.getElementById('orderSummaryTotal').textContent = '₹' + grandTotal;
+    updateOrderSummary();
     document.getElementById('checkoutOverlay').classList.add('active');
     document.body.style.overflow = 'hidden';
+}
+
+function updateOrderSummary() {
+    const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
+    const delivery = subtotal > 0 ? 50 : 0;
+    const grandTotal = subtotal + delivery;
+    document.getElementById('orderSummaryItems').innerHTML = cart.map(item => `<div class="order-item"><span>${item.name} ${item.variant !== 'Combo' ? '(' + item.variant + ')' : ''} × ${item.qty}</span><span>₹${item.price * item.qty}</span></div>`).join('') + `<div class="order-item" style="border-top:1px solid #eee;padding-top:8px;margin-top:8px"><span>Delivery Charge</span><span>₹${delivery}</span></div><div class="order-item" style="font-size:0.8rem;color:#888;margin-top:4px"><span>🛵 0–3 km: ₹50 | Above 3 km: ₹100</span></div>`;
+    document.getElementById('orderSummaryTotal').textContent = '₹' + grandTotal;
 }
 
 function closeCheckout(e) {
@@ -309,7 +324,7 @@ function placeOrder() {
     if (!phone || phone.length < 10) { showToast('Please enter valid phone number', 'error'); return; }
     if (!address) { showToast('Please enter delivery address', 'error'); return; }
     const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
-    const delivery = DELIVERY_CHARGE;
+    const delivery = 50;
     const grandTotal = subtotal + delivery;
     let message = `🍗 *NEW ORDER - CLUB10CHICKEN* 🍗
 
@@ -335,7 +350,7 @@ function placeOrder() {
     message += `
 📦 *Subtotal:* ₹${subtotal}
 `;
-    message += `🚚 *Delivery:* ₹${delivery}
+    message += `🚚 *Delivery:* ₹${delivery} (0–3 km: ₹50 | Above 3 km: ₹100)
 `;
     message += `💰 *GRAND TOTAL:* ₹${grandTotal}
 `;
