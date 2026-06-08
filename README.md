@@ -117,7 +117,7 @@ This project was built to:
 
 ## 📸 Screenshots
 
-Add screenshots here after deployment.
+
 
 ---
 
@@ -128,7 +128,6 @@ Add screenshots here after deployment.
 * Order tracking
 * Customer accounts
 * SEO optimization
-* Google Maps integration
 * Analytics dashboard
 
 ---
