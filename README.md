@@ -115,27 +115,28 @@ This project was built to:
 
 ---
 
-## 📸 Screenshots
+## 📸 Project Screenshots
 
-### Home Page
-
-![Home Page](screenshots/home-page.png)
+### Hero Section
+<img src="screenshots/hero-section.png" width="800">
 
 ### Menu Section
+<img src="screenshots/menu-section.png" width="800">
 
-![Menu Section](screenshots/menu-section.png)
+### Combo Offers
+<img src="screenshots/combo-offers.png" width="800">
 
-### Shopping Cart
+### Customer Reviews
+<img src="screenshots/reviews-section.png" width="800">
 
-![Shopping Cart](screenshots/cart.png)
+### Contact Us
+<img src="screenshots/contact-us.png" width="800">
 
 ### Mobile Responsive View
+<img src="screenshots/mobile-view.png" width="400">
 
-![Mobile View](screenshots/mobile-view.png)
-
-### Checkout Page
-
-![Checkout Page](screenshots/checkout.png)
+### Order Details
+<img src="screenshots/your-order-details.png" width="800">
 ---
 
 ## 🔮 Future Enhancements
