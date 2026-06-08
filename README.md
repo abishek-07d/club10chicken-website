@@ -158,7 +158,7 @@ B.E. Computer Science & Engineering (Cyber Security)
 
 GitHub: [@abishek-07d](https://github.com/abishek-07d)
 
-LinkedIn: [Abishek D](https://www.linkedin.com/in/abishek-d-437638323)
+LinkedIn: [AISHEK DEVANAND](https://www.linkedin.com/in/abishek-d-437638323)
 ---
 
 ## 📄 License
