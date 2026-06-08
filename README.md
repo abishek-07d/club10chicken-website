@@ -95,15 +95,25 @@ CLUB10CHICKEN has been serving customers for over 3 years. This website was deve
 club10chicken-website/
 │
 ├── index.html
+├── README.md
+│
 ├── css/
 │   └── style.css
+│
+├── images/
+│   └── bharatpe-qr.jpeg
 │
 ├── js/
 │   └── script.js
 │
-├── images/
-│
-└── README.md
+└── screenshots/
+    ├── hero-section.png
+    ├── menu-section.png
+    ├── combo-offers.png
+    ├── reviews-section.png
+    ├── contact-us.png
+    ├── mobile-view.png
+    └── your-order-details.png
 ```
 
 ---
