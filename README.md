@@ -1,5 +1,10 @@
 # 🍗 CLUB10CHICKEN - Official Business Website
 
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![Vercel](https://img.shields.io/badge/Deployment-Vercel-black?style=flat-square&logo=vercel)
+
 A modern, responsive business website developed for **CLUB10CHICKEN**, a local chicken restaurant. This project was created to help the business establish an online presence, showcase its menu, and provide customers with an easy way to explore products and place orders.
 
 ---
@@ -137,6 +142,7 @@ This project was built to:
 
 ### Order Details
 <img src="screenshots/your-order-details.png" width="800">
+
 ---
 
 ## 🔮 Future Enhancements
