@@ -117,8 +117,25 @@ This project was built to:
 
 ## 📸 Screenshots
 
+### Home Page
 
+![Home Page](screenshots/home-page.png)
 
+### Menu Section
+
+![Menu Section](screenshots/menu-section.png)
+
+### Shopping Cart
+
+![Shopping Cart](screenshots/cart.png)
+
+### Mobile Responsive View
+
+![Mobile View](screenshots/mobile-view.png)
+
+### Checkout Page
+
+![Checkout Page](screenshots/checkout.png)
 ---
 
 ## 🔮 Future Enhancements
