@@ -156,10 +156,9 @@ This project was built to:
 
 B.E. Computer Science & Engineering (Cyber Security)
 
-GitHub: https://github.com/abishek-07d
+GitHub: [@abishek-07d](https://github.com/abishek-07d)
 
-LinkedIn: https://www.linkedin.com/in/abishek-d-437638323
-
+LinkedIn: [Abishek D](https://www.linkedin.com/in/abishek-d-437638323)
 ---
 
 ## 📄 License
