@@ -80,7 +80,7 @@ CLUB10CHICKEN has been serving customers for over 3 years. This website was deve
 
 ## 🚀 Live Demo
 
-🔗 https://club10chicken-website.vercel.app
+🔗 [Live Website](https://club10chicken-website.vercel.app)
 
 ---
 
